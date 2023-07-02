@@ -9,7 +9,6 @@
 # Installation
 - ensure that the dependancies are added and started
 - add rsg-sellwildhorse to your resources folder
-- add npc to your "\rsg-npc\Config.lua"
 
 # Starting the resource
-- add the following to your server.cfg file : ensure rsg-sellwildhorse
+- add the following to your server.cfg file: ensure rsg-sellwildhorse
