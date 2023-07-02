@@ -21,7 +21,7 @@ AddEventHandler('rsg-sellwildhorse:server:reward', function(rewardmoney, rewardi
 
     TriggerClientEvent('inventory:client:ItemBox', src, RSGCore.Shared.Items[rewarditem], "add")
 
-    RSGCore.Functions.Notify(Lang:t('success.you_have_sold_all_your_horse_for')..reward, 'success', 3000)
+    RSGCore.Functions.Notify(src, Lang:t('success.you_have_sold_all_your_horse_for')..reward, 'success', 3000)
 
     TriggerEvent('rsg-log:server:CreateLog', 'testwebhook', 'WILD HORSE 🐎', 'yellow', firstname..' '..lastname..' Horse sold for '..rewardmoney..' 💰 ')
 end)
