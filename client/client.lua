@@ -2,6 +2,8 @@ local RSGCore = exports['rsg-core']:GetCoreObject()
 
 local createdEntries = {}
 local selling = false
+local cooldown = false
+local cooldowntimer = 0
 
 -- Delete Entity
 local DeleteThis = function(horse)
@@ -56,6 +58,20 @@ end)
 -- Sell Wild Horse Menu
 RegisterNetEvent('rsg-sellwildhorse:client:menu', function(name)
     if selling then return end
+
+    if Config.EnableCooldown and cooldowntimer > 0 then
+        local time = 'seconds'
+        local timer = cooldowntimer
+
+        if cooldowntimer > 60 then
+            timer = math.floor(cooldowntimer / 60)
+            time = 'minutes'
+        end
+
+        RSGCore.Functions.Notify('You need to wait '..timer..' '..time..' before selling another Wild Horse!', 'error', 3000)
+
+        return
+    end
 
     exports['rsg-menu']:openMenu(
     {
@@ -163,6 +179,10 @@ AddEventHandler('rsg-sellwildhorse:client:sellhorse', function()
 
                     selling = false
 
+                    if Config.EnableCooldown then
+                        TriggerEvent('rsg-sellwildhorse:client:Cooldown')
+                    end
+
                     return
                 end
             end)
@@ -170,8 +190,30 @@ AddEventHandler('rsg-sellwildhorse:client:sellhorse', function()
     end
 
     selling = false
+end)
 
-    RSGCore.Functions.Notify(Lang:t('error.something_went_wrong'), 'error', 3000)
+AddEventHandler('rsg-sellwildhorse:client:Cooldown', function()
+    if cooldown then return end
+
+    CreateThread(function()
+        cooldowntimer = Config.Cooldown
+        cooldown = true
+
+        while true do
+            Wait(1000)
+
+            cooldowntimer = cooldowntimer - 1
+
+            print(cooldowntimer)
+
+            if cooldowntimer <= 0 then
+                cooldowntimer = 0
+                cooldown = false
+
+                return
+            end
+        end
+    end)
 end)
 
 -- Cleanup
