@@ -25,3 +25,15 @@ AddEventHandler('rsg-sellwildhorse:server:reward', function(rewardmoney, rewardi
 
     TriggerEvent('rsg-log:server:CreateLog', 'testwebhook', 'WILD HORSE 🐎', 'yellow', firstname..' '..lastname..' Horse sold for '..rewardmoney..' 💰 ')
 end)
+
+if Config.Debug then
+    -- Debug Command to Set Any Horse as Wild Horse
+    RSGCore.Commands.Add('sethorsewild', 'Make current Horse a Wild Horse to test/debug Horse Taming activity', {}, false, function(source)
+        local src = source
+        local Player = RSGCore.Functions.GetPlayer(src)
+
+        if not Player then return end
+
+        TriggerClientEvent('rsg-sellwildhorse:client:SetHorseAsWild', src)
+    end, 'admin')
+end

@@ -216,6 +216,18 @@ AddEventHandler('rsg-sellwildhorse:client:Cooldown', function()
     end)
 end)
 
+if Config.Debug then
+    RegisterNetEvent('rsg-sellwildhorse:client:SetHorseAsWild')
+    AddEventHandler('rsg-sellwildhorse:client:SetHorseAsWild', function()
+        local ped = PlayerPedId()
+        local mount = GetMount(ped)
+
+        if mount then
+            Citizen.InvokeNative(0xAEB97D84CDF3C00B, mount, true)
+        end
+    end)
+end
+
 -- Cleanup
 AddEventHandler('onResourceStop', function(resourceName)
     if GetCurrentResourceName() ~= resourceName then return end
