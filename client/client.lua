@@ -72,34 +72,24 @@ RegisterNetEvent('rsg-sellwildhorse:client:menu', function(name)
 
         return
     end
-
-    exports['rsg-menu']:openMenu(
-    {
+    
+    lib.registerContext(
         {
-            header = name,
-            icon = "fas fa-horse-head",
-            isMenuHeader = true
-        },
-        {
-            header = Lang:t('menu.sell_stored_horse'),
-            txt = Lang:t('text.sell_store_horse'),
-            icon = "fas fa-paw",
-            params =
-            {
-                event = 'rsg-sellwildhorse:client:sellhorse',
-                isServer = false
-            }
-        },
-        {
-            header = Lang:t('menu.close_menu'),
-            icon = "fas fa-times-circle",
-            txt = '',
-            params =
-            {
-                event = 'rsg-menu:closeMenu'
+            id = 'sellhorse_menu',
+            title = name,
+            position = 'top-right',
+            options = {
+                {
+                    title = Lang:t('menu.sell_stored_horse'),
+                    description = Lang:t('text.sell_store_horse'),
+                    icon = 'fas fa-paw',
+                    event = 'rsg-sellwildhorse:client:sellhorse',
+                },
             }
         }
-    })
+    )
+    lib.showContext('sellhorse_menu')
+    
 end)
 
 -- Sell Horse Event
