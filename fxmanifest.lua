@@ -8,6 +8,7 @@ description 'rsg-sellwildhorse'
 
 shared_scripts
 {
+    '@ox_lib/init.lua',
     '@rsg-core/shared/locale.lua',
     'locales/en.lua',
     'config.lua'
@@ -23,8 +24,7 @@ server_scripts
     'server/server.lua'
 }
 
-dependencies
-{
+dependencies {
     'rsg-core',
-    'rsg-menu'
+    'ox_lib',
 }
