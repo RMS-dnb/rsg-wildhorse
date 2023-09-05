@@ -1,0 +1,1 @@
+['saddlebag'] 			= {['name'] = 'saddlebag', 			['label'] = 'Saddlebag',            	['weight'] = 650,     ['type'] = 'item',      ['image'] = 'saddlebag.png',         	['unique'] = true,     ['useable'] = true,     ['shouldClose'] = false,     ['combinable'] = nil,   ['description'] = ''},
