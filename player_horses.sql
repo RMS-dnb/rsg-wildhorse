@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS `market_items`;
+DROP TABLE IF EXISTS `player_horses`;
 CREATE TABLE IF NOT EXISTS `player_horses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `citizenid` varchar(50) NOT NULL,
