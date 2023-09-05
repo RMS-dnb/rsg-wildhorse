@@ -84,6 +84,13 @@ RegisterNetEvent('rsg-sellwildhorse:client:menu', function(name)
                     description = Lang:t('text.sell_store_horse'),
                     icon = 'fas fa-paw',
                     event = 'rsg-sellwildhorse:client:sellhorse',
+                   
+                },
+                {
+                    title = Lang:t('menu.save_stored_horse'),
+                    description = Lang:t('text.save_store_horse'),
+                    icon = 'fas fa-paw',
+                    event = 'rms-wildhorsestable:client:wildhorsestable',
                 },
             }
         }
@@ -236,3 +243,144 @@ AddEventHandler('onResourceStop', function(resourceName)
         end
     end
 end)
+
+
+---save Wild Horse to stables
+
+local RSGCore = exports['rsg-core']:GetCoreObject()
+
+local createdEntries = {}
+local selling = false
+local cooldown = false
+local cooldowntimer = 0
+
+-- Function to check if the horse is wild and untamed
+function CheckIfHorseIsWildAndUntamed(model)
+    -- Add your logic here to check if the horse is wild and untamed (e.g., check horse attributes)
+    return true -- Return true if wild and untamed, false if not
+end
+
+function SaveWildHorseToDatabase(model, horseName, gender)
+    local player = source -- Assuming this function is triggered by a player source
+    local playerName = GetPlayerName(player)
+
+    -- Adapt this SQL statement to your database structure
+    local query = [[
+        INSERT INTO wild_horses (player_name, model, horse_name, gender)
+        VALUES (@playerName, @model, @horseName, @gender)
+    ]]
+
+    local params = {
+        ["@playerName"] = playerName,
+        ["@model"] = model,
+        ["@horseName"] = horseName,
+        ["@gender"] = gender
+    }
+
+    -- Execute the SQL query (replace 'mysql-async' with your database library)
+    exports['mysql-async']:mysql_execute(query, params)
+    
+    -- Trigger the DeleteVehicle event after saving the horse
+    TriggerClientEvent('RSGCore:Command:DeleteVehicle', source)
+    
+    
+end
+
+
+
+
+
+
+  -- Save Wild Horse Event (Client-Side)
+AddEventHandler('rms-wildhorsestable:client:wildhorsestable', function()
+    local ped = PlayerPedId()
+    local horse = Citizen.InvokeNative(0xE7E11B8DCBED1058, ped)
+    local myhorse = exports['rsg-horses']:CheckActiveHorse()
+    local model = GetEntityModel(horse)
+    local owner = Citizen.InvokeNative(0xF103823FFE72BB49, horse)
+    local player = source 
+
+    if Config.Debug then
+        print("Rider    : "..tostring(ped))
+        print("Horse    : "..tostring(horse))
+        print("Model    : "..tostring(model))
+        print("Owner    : "..tostring(owner))
+    end
+
+    if not horse or horse == 0 then
+        RSGCore.Functions.Notify(Lang:t('error.you_dont_have_any_horse_to_save'), 'error', 3000)
+        Wait(3000)
+        return
+    end
+
+    if not owner or owner ~= ped then
+        RSGCore.Functions.Notify(Lang:t('error.not_tamed'), 'error', 3000)
+        Wait(3000)
+        return
+    end
+
+    if myhorse and myhorse ~= 0 then
+        RSGCore.Functions.Notify(Lang:t('error.owned_horse'), 'error', 3000)
+        Wait(3000)
+        return
+    end
+
+    -- Check if the horse is wild and untamed before saving
+    if not CheckIfHorseIsWildAndUntamed(model) then
+        RSGCore.Functions.Notify('You can only save wild and untamed horses!', 'error', 3000)
+        Wait(3000)
+        return
+    end
+
+    -- Prompt the player to enter horse details (name and gender)
+    local horseName = GetUserInput("Enter horse name:")
+    local gender = GetUserInput("Enter horse gender (Male/Female):")
+
+    if horseName and gender then
+        TriggerServerEvent('rms-wildhorsestable:server:WildHorseStable', model, horseName, gender)
+        
+        
+    else
+        RSGCore.Functions.Notify('Invalid horse name or gender.', 'error', 3000)
+    end
+end)
+
+-- Function to get user input via a modal dialog (with text prompt)
+function GetUserInput(prompt, defaultText)
+    local input = defaultText or ""
+    AddTextEntry("FMMC_KEY_TIP8", prompt)
+    DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP8", "", "", "", "", "", 30)
+    while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+        Wait(0)
+    end
+    if UpdateOnscreenKeyboard() ~= 2 then
+        input = GetOnscreenKeyboardResult()
+        Wait(500)
+    end
+    return input
+end
+
+-- Your existing code for cooldown handling
+-- Your existing code for setting horses as wild (debug)
+
+-- Cleanup
+AddEventHandler('onResourceStop', function(resourceName)
+    if GetCurrentResourceName() ~= resourceName then return end
+
+    FreezeEntityPosition(PlayerPedId(), false)
+
+    for i = 1, #createdEntries do
+        if createdEntries[i].type == 'PROMPT' then
+            if createdEntries[i].handle then
+                exports['rsg-core']:deletePrompt(createdEntries[i].handle)
+            end
+        end
+
+        if createdEntries[i].type == 'BLIP' then
+            if createdEntries[i].handle then
+                RemoveBlip(createdEntries[i].handle)
+            end
+        end
+    end
+end)
+

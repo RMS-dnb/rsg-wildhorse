@@ -3,8 +3,9 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 game 'rdr3'
 lua54 'yes'
 
-author 'Mr.SMURF'
-description 'rsg-sellwildhorse'
+author 'Re-edit by RMS_dnb'
+author 'Original code by Mr.SMURF'
+description 'rsg-wildhorse'
 
 shared_scripts
 {
@@ -21,7 +22,8 @@ client_scripts
 
 server_scripts
 {
-    'server/server.lua'
+    'server/server.lua',
+    '@oxmysql/lib/MySQL.lua'
 }
 
 dependencies {
