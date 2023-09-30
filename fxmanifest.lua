@@ -6,6 +6,7 @@ lua54 'yes'
 author 'Re-edit by RMS_dnb'
 author 'Original code by Mr.SMURF'
 description 'rsg-wildhorse'
+version '1.0.0'
 
 shared_scripts
 {
