@@ -1,5 +1,36 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
 
+-----------------------------------------------------------------------
+-- version checker
+-----------------------------------------------------------------------
+local function versionCheckPrint(_type, log)
+    local color = _type == 'success' and '^2' or '^1'
+
+    print(('^5['..GetCurrentResourceName()..']%s %s^7'):format(color, log))
+end
+
+local function CheckVersion()
+    PerformHttpRequest('https://raw.githubusercontent.com/Rexshack-RedM/rsg-wildhorse/main/version.txt', function(err, text, headers)
+        local currentVersion = GetResourceMetadata(GetCurrentResourceName(), 'version')
+
+        if not text then 
+            versionCheckPrint('error', 'Currently unable to run a version check.')
+            return 
+        end
+
+        --versionCheckPrint('success', ('Current Version: %s'):format(currentVersion))
+        --versionCheckPrint('success', ('Latest Version: %s'):format(text))
+        
+        if text == currentVersion then
+            versionCheckPrint('success', 'You are running the latest version.')
+        else
+            versionCheckPrint('error', ('You are currently running an outdated version, please update to version %s'):format(text))
+        end
+    end)
+end
+
+-----------------------------------------------------------------------
+
 RegisterServerEvent('rsg-sellwildhorse:server:reward')
 AddEventHandler('rsg-sellwildhorse:server:reward', function(rewardmoney, rewarditem)
     local src = source
@@ -26,16 +57,12 @@ AddEventHandler('rsg-sellwildhorse:server:reward', function(rewardmoney, rewardi
     TriggerEvent('rsg-log:server:CreateLog', 'testwebhook', 'WILD HORSE 🐎', 'yellow', firstname..' '..lastname..' Horse sold for '..rewardmoney..' 💰 ')
 end)
 
-
-
 --save to stables
 
 -- Mapping of horse model hashes to their names
 local horseModels = {
     [-1261814606] = "a_c_horse_nokota_whiteroan",
     [1772321403] = "a_c_donkey_01",
-    -- Add more mappings for other horse models here
-   
     [-1963397600] = "A_C_Horse_AmericanPaint_Greyovero",
     [-450053710] = "A_C_Horse_AmericanPaint_Overo",
     [1792770814] = "A_C_Horse_AmericanPaint_SplashedWhite",
@@ -110,8 +137,16 @@ local horseModels = {
     [-598917269] = "A_C_Horse_MurfreeBrood_Mange_03",
     [-2145697477] = "A_C_Horse_Nokota_BlueRoan",
     [107013696] = "A_C_Horse_Nokota_ReverseDappleRoan",
-   
-
+    [-1230516683] = "A_C_HorseMule_01",
+    [594040097] = "A_C_HorseMulePainted_01",
+    [-363708904] = "P_C_horse_01",
+    [1072019803] = "A_C_Horse_tennesseewalker_blackrabicano",--
+    [1074477367] = "a_c_horse_tennesseewalker_chestnut",
+    [-85890205] = "a_c_horse_tennesseewalker_dapplebay",
+    [-1667789645] = "a_c_horse_tennesseewalker_flaxenroan",
+    [1048964673] = "A_C_Horse_TennesseeWalker_GoldPalomino_PC",
+    [446670976] = "a_c_horse_tennesseewalker_mahoganybay",
+    [-727455979] = "a_c_horse_tennesseewalker_redroan",
     -- Add more mappings for other horse models here
 }
 
@@ -151,35 +186,31 @@ AddEventHandler('rms-wildhorsestable:server:WildHorseStable', function(modelHash
 
         local horseid = GenerateHorseid()
 
-
-
--- Insert the wild horse into the 'player_horses' table as a wild horse, you are able to monitor how many horses are caught in the wild.
-MySQL.Async.insert('INSERT INTO player_horses(citizenid, horseid, name, horse, gender, active, wild) VALUES(@citizenid, @horseid, @name, @horse, @gender, @active, @wild)', {
-    ['@citizenid'] = Player.PlayerData.citizenid,
-    ['@horseid'] = horseid,
-    ['@name'] = horsename,
-    ['@horse'] = modelName, -- Store the model name instead of the hash
-    ['@gender'] = gender,
-    ['@active'] = false,
-    ['@wild'] = true,
-}, function(inserted)
-    if inserted then
-        RSGCore.Functions.Notify(src, 'You have successfully saved a wild horse and used your saddle bag.', 'success', 3000)
-        
-        -- Trigger the client event to delete the horse entity
-        TriggerClientEvent('RSGCore:Command:DeleteVehicle', src)
-      
-    else
-        RSGCore.Functions.Notify(src, 'Failed to save the wild horse. Please try again later.', 'error', 3000)
-        -- Add code for handling the case where the horse insertion fails, such as returning the item to the player.
-    end
-end)
-
+		-- Insert the wild horse into the 'player_horses' table as a wild horse, you are able to monitor how many horses are caught in the wild.
+		MySQL.Async.insert('INSERT INTO player_horses(citizenid, horseid, name, horse, gender, active, wild) VALUES(@citizenid, @horseid, @name, @horse, @gender, @active, @wild)', {
+			['@citizenid'] = Player.PlayerData.citizenid,
+			['@horseid'] = horseid,
+			['@name'] = horsename,
+			['@horse'] = modelName, -- Store the model name instead of the hash
+			['@gender'] = gender,
+			['@active'] = false,
+			['@wild'] = true,
+		}, function(inserted)
+			if inserted then
+				RSGCore.Functions.Notify(src, 'You have successfully saved a wild horse and used your saddle bag.', 'success', 3000)
+				
+				-- Trigger the client event to delete the horse entity
+				TriggerClientEvent('RSGCore:Command:DeleteVehicle', src)
+			  
+			else
+				RSGCore.Functions.Notify(src, 'Failed to save the wild horse. Please try again later.', 'error', 3000)
+				-- Add code for handling the case where the horse insertion fails, such as returning the item to the player.
+			end
+		end)
     else
         RSGCore.Functions.Notify(src, 'You need a saddlebag to save a wild horse.', 'error', 3000)
     end
 end)
-
 
 --debug
 if Config.Debug then
@@ -193,3 +224,8 @@ if Config.Debug then
         TriggerClientEvent('sellwild:client:SetHorseAsWild', src)
     end, 'admin')
 end
+
+--------------------------------------------------------------------------------------------------
+-- start version check
+--------------------------------------------------------------------------------------------------
+CheckVersion()

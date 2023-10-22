@@ -25,32 +25,21 @@ local DeleteThis = function(horse)
     return false
 end
 
--- Prompts
-CreateThread(function()
-    for i = 1, #Config.SellWildHorseLocations do
-        local loc = Config.SellWildHorseLocations[i]
-        local name = loc.name
-        local location = loc.location
-        local coords = loc.coords
-        local showblip = loc.showblip
-
-        exports['rsg-core']:createPrompt(location, coords, RSGCore.Shared.Keybinds['J'], Lang:t('menu.open')..name,
-        {
+-------------------------------------------------------------------------------------------
+-- prompts and blips if needed
+-------------------------------------------------------------------------------------------
+Citizen.CreateThread(function()
+    for _, v in pairs(Config.SellWildHorseLocations) do
+        exports['rsg-core']:createPrompt(v.location, v.coords, RSGCore.Shared.Keybinds[Config.Keybind], Lang:t('menu.open')..v.name, {
             type = 'client',
             event = 'rsg-sellwildhorse:client:menu',
-            args = {name}
+            args = { v.name },
         })
-
-        createdEntries[#createdEntries + 1] = {type = 'PROMPT', handle = location}
-
-        if showblip then
-            local SellWildHorseBlip = Citizen.InvokeNative(0x554D9D53F696D002, 1664425300, coords)
-
-            SetBlipSprite(SellWildHorseBlip, GetHashKey(Config.Blip.blipSprite), true)
-            SetBlipScale(SellWildHorseBlip, Config.Blip.blipScale)
+        if v.showblip == true then
+            local SellWildHorseBlip = Citizen.InvokeNative(0x554D9D53F696D002, 1664425300, v.coords)
+            SetBlipSprite(SellWildHorseBlip,  joaat(Config.Blip.blipSprite), true)
+            SetBlipScale(Config.Blip.blipScale, 0.2)
             Citizen.InvokeNative(0x9CB1A1623062F402, SellWildHorseBlip, Config.Blip.blipName)
-
-            createdEntries[#createdEntries + 1] = {type = 'BLIP', handle = SellWildHorseBlip}
         end
     end
 end)
