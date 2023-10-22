@@ -147,9 +147,8 @@ local horseModels = {
     [1048964673] = "A_C_Horse_TennesseeWalker_GoldPalomino_PC",
     [446670976] = "a_c_horse_tennesseewalker_mahoganybay",
     [-727455979] = "a_c_horse_tennesseewalker_redroan",
-    -- Add more mappings for other horse models here
+-- Add more mappings for other horse models here
 }
-
 --main
 RegisterServerEvent('rms-wildhorsestable:server:WildHorseStable')
 AddEventHandler('rms-wildhorsestable:server:WildHorseStable', function(modelHash, horsename, gender)
