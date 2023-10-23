@@ -137,9 +137,18 @@ local horseModels = {
     [-598917269] = "A_C_Horse_MurfreeBrood_Mange_03",
     [-2145697477] = "A_C_Horse_Nokota_BlueRoan",
     [107013696] = "A_C_Horse_Nokota_ReverseDappleRoan",
-    -- Add more mappings for other horse models here
+    [-1230516683] = "A_C_HorseMule_01",
+    [594040097] = "A_C_HorseMulePainted_01",
+    [-363708904] = "P_C_horse_01",
+    [1072019803] = "A_C_Horse_tennesseewalker_blackrabicano",--
+    [1074477367] = "a_c_horse_tennesseewalker_chestnut",
+    [-85890205] = "a_c_horse_tennesseewalker_dapplebay",
+    [-1667789645] = "a_c_horse_tennesseewalker_flaxenroan",
+    [1048964673] = "A_C_Horse_TennesseeWalker_GoldPalomino_PC",
+    [446670976] = "a_c_horse_tennesseewalker_mahoganybay",
+    [-727455979] = "a_c_horse_tennesseewalker_redroan",
+-- Add more mappings for other horse models here
 }
-
 --main
 RegisterServerEvent('rms-wildhorsestable:server:WildHorseStable')
 AddEventHandler('rms-wildhorsestable:server:WildHorseStable', function(modelHash, horsename, gender)
