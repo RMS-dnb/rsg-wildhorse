@@ -1,6 +1,6 @@
 
 # Edit by @RMS_dnb
-- add option to send wild caught tamed horses to the stables. Job locked to "horsetrainer"
+- add option to send wild caught tamed horses to the stables. Job locked to "horsetrainer" must have "saddlebag" in inventory.
 
 # RexshackGaming
 - discord : https://discord.gg/s5uSk56B65
