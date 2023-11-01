@@ -1,7 +1,7 @@
 Config = {}
 
 -- settings
-Config.Debug = true
+Config.Debug = false
 Config.SellTime = 20000
 Config.EnableCooldown = true
 Config.Cooldown = 900 -- 15 mins cooldown by default
