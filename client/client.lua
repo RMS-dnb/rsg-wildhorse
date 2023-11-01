@@ -233,9 +233,7 @@ AddEventHandler('onResourceStop', function(resourceName)
     end
 end)
 
-
 ---save Wild Horse to stables
-
 local RSGCore = exports['rsg-core']:GetCoreObject()
 
 local createdEntries = {}
@@ -249,38 +247,7 @@ function CheckIfHorseIsWildAndUntamed(model)
     return true -- Return true if wild and untamed, false if not
 end
 
-function SaveWildHorseToDatabase(model, horseName, gender)
-    local player = source -- Assuming this function is triggered by a player source
-    local playerName = GetPlayerName(player)
-
-    -- Adapt this SQL statement to your database structure
-    local query = [[
-        INSERT INTO wild_horses (player_name, model, horse_name, gender)
-        VALUES (@playerName, @model, @horseName, @gender)
-    ]]
-
-    local params = {
-        ["@playerName"] = playerName,
-        ["@model"] = model,
-        ["@horseName"] = horseName,
-        ["@gender"] = gender
-    }
-
-    -- Execute the SQL query (replace 'mysql-async' with your database library)
-    exports['mysql-async']:mysql_execute(query, params)
-    
-    -- Trigger the DeleteVehicle event after saving the horse
-    TriggerClientEvent('RSGCore:Command:DeleteVehicle', source)
-    
-    
-end
-
-
-
-
-
-
-  -- Save Wild Horse Event (Client-Side)
+-- Save Wild Horse Event (Client-Side)
 AddEventHandler('rms-wildhorsestable:client:wildhorsestable', function()
     local ped = PlayerPedId()
     local horse = Citizen.InvokeNative(0xE7E11B8DCBED1058, ped)

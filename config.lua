@@ -1,7 +1,7 @@
 Config = {}
 
 -- settings
-Config.Debug = false
+Config.Debug = true
 Config.SellTime = 20000
 Config.EnableCooldown = true
 Config.Cooldown = 900 -- 15 mins cooldown by default
@@ -26,11 +26,6 @@ Config.SellWildHorseLocations =
     {name = 'Van Horn Horse Seller',       location = 'vanhorn-sellwildhorse',       coords = vector3(2932.95, 568.53, 44.99 -0.8), showblip = true }, --blackwater
 }
 
-Config.SaveWildHorseLocations =
-{
-
-	{name = 'Wild Horse to stables',       location = 'ranch-savewildhorse1',       coords = vector3(-2430.842, -2368.068, 61.225498 -0.8), showblip = true }, --Cobra
-}
 
 Config.PaymentType = 'cash'
 Config.SaleMultiplier = 1
