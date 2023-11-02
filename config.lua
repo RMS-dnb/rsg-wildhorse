@@ -19,11 +19,11 @@ Config.SellWildHorseLocations =
     {name = 'Valentine Horse Seller',      location = 'valentine-sellwildhorse',     coords = vector3(-382.54, 788.06, 115.91 -0.8), showblip = true }, --valentine
     {name = 'St Denis Horse Seller',       location = 'stdenis-sellwildhorse',       coords = vector3(2839.5, -1305.68, 46.66 -0.8), showblip = true }, --stdenis
     {name = 'West Elizabeth Horse Seller', location = 'westelizabeth-sellwildhorse', coords = vector3(-2543.44, 401.73, 148.28 -0.8), showblip = true }, --westelizabeth
-    {name = 'Stawberry Horse Seller',      location = 'stawberry-sellwildhorse',     coords = vector3(-3641.46, -2626.49, -13.73 -0.8), showblip = true }, --stawberry
+    {name = 'Armadillo Horse Seller',      location = 'armadillo-sellwildhorse',     coords = vector3(-3699.626, -2568.44, -13.65047-0.8), showblip = true }, --armadillo
     {name = 'Tumbleweed Horse Seller',     location = 'tumbleweed-sellwildhorse',    coords = vector3(-5527.8, -2948.04, -1.56 -0.8), showblip = true }, --tumbleweed
     {name = 'Blackwater Horse Seller',     location = 'blackwater-sellwildhorse',    coords = vector3(-945.21, -1337.29, 50.65 -0.8), showblip = true }, --blackwater
-    {name = 'Rhodes Horse Seller',         location = 'rhodes-sellwildhorse',        coords = vector3(1434.89, -1291.61, 77.82 -0.8), showblip = true }, --blackwater
-    {name = 'Van Horn Horse Seller',       location = 'vanhorn-sellwildhorse',       coords = vector3(2932.95, 568.53, 44.99 -0.8), showblip = true }, --blackwater
+    {name = 'Rhodes Horse Seller',         location = 'rhodes-sellwildhorse',        coords = vector3(1434.89, -1291.61, 77.82 -0.8), showblip = true }, --rhodes
+    {name = 'Van Horn Horse Seller',       location = 'vanhorn-sellwildhorse',       coords = vector3(2932.95, 568.53, 44.99 -0.8), showblip = true }, --van horn
 }
 
 
